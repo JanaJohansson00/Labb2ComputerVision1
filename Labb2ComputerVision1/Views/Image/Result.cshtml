@@ -1,0 +1,33 @@
+﻿@using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models
+@{
+    ViewData["Title"] = "Analysis Result";
+    var analysisResult = ViewBag.AnalysisResult as ImageAnalysis;
+    var thumbnail = ViewBag.Thumbnail as string;
+}
+
+<h2>Analysis Result</h2>
+
+@if (analysisResult != null)
+{
+    <h3>Tags:</h3>
+    <ul>
+        @foreach (var tag in analysisResult.Tags)
+        {
+            <li>@tag.Name (@tag.Confidence.ToString("P"))</li>
+        }
+    </ul>
+
+    <h3>Objects:</h3>
+    <ul>
+        @foreach (var obj in analysisResult.Objects)
+        {
+            <li>@obj.ObjectProperty (@obj.Confidence.ToString("P")) at @obj.Rectangle.X, @obj.Rectangle.Y</li>
+        }
+    </ul>
+
+    <h3>Thumbnail:</h3>
+    @if (!string.IsNullOrEmpty(thumbnail))
+    {
+        <img src="data:image/png;base64,@thumbnail" />
+    }
+}
